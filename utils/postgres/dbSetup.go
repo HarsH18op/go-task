@@ -3,7 +3,7 @@ package postgres
 import (
 	"fmt"
 	"log"
-	"my-go-task/models"
+	"my-go-task/dbModels"
 	"os"
 
 	"gorm.io/driver/postgres"
@@ -31,7 +31,7 @@ func ConnectDatabase() *gorm.DB {
 	log.Println("✅ Connected to PostgreSQL with GORM!")
 
 	// DB = db
-	db.AutoMigrate(&models.User{})
+	db.AutoMigrate(&dbModels.User{})
 	log.Println("✅ PostgreSQL database migrated successfully!")
 
 	return db

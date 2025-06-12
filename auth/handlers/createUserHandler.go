@@ -1,8 +1,9 @@
 package handlers
 
 import (
-	"my-go-task/models"
-	"my-go-task/services"
+	"log"
+	"my-go-task/auth/models"
+	"my-go-task/auth/services"
 	my_validators "my-go-task/utils/validators"
 	"net/http"
 
@@ -11,29 +12,17 @@ import (
 )
 
 // Struct that holds a reference to the service.
-type UserHandler struct {
-	service *services.UserService
+type CreateUserHandler struct {
+	service *services.CreateUserService
 }
 
 // Constructor to create a handler using the given service.
-func NewUserHandler(service *services.UserService) *UserHandler {
-	return &UserHandler{service: service}
+func NewCreateUserHandler(service *services.CreateUserService) *CreateUserHandler {
+	return &CreateUserHandler{service: service}
 }
 
-// This is the actual HTTP GET handler function.
-func (h *UserHandler) GetUsers(c *gin.Context) {
-	users, err := h.service.GetAllUsersService()
-	if err != nil {
-		c.JSON(500, gin.H{"error": err.Error()})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{
-		"data": users,
-	})
-}
-
-func (h *UserHandler) CreateUser(c *gin.Context){
-	var userRequestData models.CreateUserRequest
+func (h *CreateUserHandler) CreateUser(c *gin.Context) {
+	var userRequestData models.CreateUserRequestModel
 	if err := c.ShouldBind(&userRequestData); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input", "details": err.Error()})
 		return
@@ -52,6 +41,7 @@ func (h *UserHandler) CreateUser(c *gin.Context){
 
 	// user, err := services.CreateUserService(userRequestData) // If implemented in normal way
 	user, err := h.service.CreateUserService(userRequestData)
+	log.Println(user)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error":   "Failed to create user",
@@ -59,7 +49,28 @@ func (h *UserHandler) CreateUser(c *gin.Context){
 		})
 		return
 	}
-	c.JSON(http.StatusCreated, gin.H{"message": "User created successfully.", "details": user})
+
+	// Convert DB models to response format
+	var response models.CreateUserResponseModel
+	var birthday *string
+	if user.Birthday != nil {
+		b := user.Birthday.Format("2006-01-02")
+		birthday = &b
+	}
+
+	response = models.CreateUserResponseModel{
+		ID:        user.ID,
+		Name:      user.Name,
+		Email:     user.Email,
+		Age:       user.Age,
+		Pancard:   user.Pancard,
+		Mobile:    user.Mobile,
+		Bio:       user.Bio,
+		Birthday:  birthday,
+		CreatedAt: user.CreatedAt.Format("2006-01-02 15:04:05"),
+		UpdatedAt: user.UpdatedAt.Format("2006-01-02 15:04:05"),
+	}
+	c.JSON(http.StatusCreated, gin.H{"message": "User created successfully.", "details": response})
 }
 
 // If implemented in normal way

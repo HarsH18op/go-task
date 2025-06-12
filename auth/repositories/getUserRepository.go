@@ -1,29 +1,26 @@
 package repositories
 
 import (
-	"my-go-task/models"
+	"my-go-task/dbModels"
 
 	"gorm.io/gorm"
 )
 
 // Defines a struct to hold the DB connection.
-type UserRepository struct {
+type GetUserRepository struct {
 	db *gorm.DB
 }
 
 // Constructor function — builds the struct and stores the db in it, Used for injecting the DB from main.go.
-func NewUserRepository(db *gorm.DB) *UserRepository {
-	return &UserRepository{db: db}
+func NewGetUserRepository(db *gorm.DB) *GetUserRepository {
+	return &GetUserRepository{db: db}
 }
 
 // Actual method to fetch users from the DB using GORM.
-func (r *UserRepository) GetAllUsers() ([]models.User, error) {
-	var users []models.User
+func (r *GetUserRepository) GetAllUsers() ([]dbModels.User, error) {
+	var users []dbModels.User
 	err := r.db.Find(&users).Error
 	return users, err
-}
-func (r *UserRepository) CreateUser(user *models.User) error {
-	return r.db.Create(user).Error
 }
 
 // If implemented in normal way

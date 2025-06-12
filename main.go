@@ -2,14 +2,16 @@ package main
 
 import (
 	"log"
-	"my-go-task/handlers"
-	"my-go-task/repositories"
-	"my-go-task/routes"
-	"my-go-task/services"
+	"my-go-task/auth/handlers"
+	"my-go-task/auth/repositories"
+	"my-go-task/auth/services"
+	userRoutes "my-go-task/routes"
 	"my-go-task/utils/postgres"
 	"os"
+
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+
 	// swaggerFiles "github.com/swaggo/files"
 	// ginSwagger "github.com/swaggo/gin-swagger"
 	_ "my-go-task/docs"
@@ -31,9 +33,12 @@ func main() {
 	// Connect to database
 	db := postgres.ConnectDatabase()
 
-	userRepo := repositories.NewUserRepository(db)
-	userService := services.NewUserService(userRepo)
-	userHandler := handlers.NewUserHandler(userService)
+	userRepo1 := repositories.NewGetUserRepository(db)
+	userRepo2 := repositories.NewCreateUserRepository(db)
+	userService1 := services.NewGetUserService(userRepo1)
+	userService2 := services.NewCreateUserService(userRepo2)
+	userHandler1 := handlers.NewGetUserHandler(userService1)
+	userHandler2 := handlers.NewCreateUserHandler(userService2)
 
 	// Create a default router
 	router := gin.Default()
@@ -52,7 +57,7 @@ func main() {
 	// Grouped API routes
 	api := router.Group("/api")
 	{
-		routes.UserApiRoutes(api, userHandler)
+		userRoutes.UserApiRoutes(api, userHandler1, userHandler2)
 	}
 
 	port := os.Getenv("SERVER_PORT")

@@ -1,27 +1,23 @@
 package services
 
 import (
-	"my-go-task/models"
-	"my-go-task/repositories"
+	"my-go-task/auth/models"
+	"my-go-task/auth/repositories"
+	"my-go-task/dbModels"
 	"time"
 )
 
 // Struct that holds a pointer to the repository.
-type UserService struct {
-	repo *repositories.UserRepository
+type CreateUserService struct {
+	repo *repositories.CreateUserRepository
 }
 
 // Constructor that receives the repo and builds the service struct.
-func NewUserService(repo *repositories.UserRepository) *UserService {
-	return &UserService{repo: repo}
+func NewCreateUserService(repo *repositories.CreateUserRepository) *CreateUserService {
+	return &CreateUserService{repo: repo}
 }
 
-// Calls the repo method to get users.
-func (s *UserService) GetAllUsersService() ([]models.User, error) {
-	return s.repo.GetAllUsers()
-}
-
-func (s *UserService) CreateUserService(req models.CreateUserRequest) (*models.User, error) {
+func (s *CreateUserService) CreateUserService(req models.CreateUserRequestModel) (*dbModels.User, error) {
 	// Manage nullable date field
 	var birthday *time.Time
 	if req.Birthday != "" {
@@ -30,7 +26,7 @@ func (s *UserService) CreateUserService(req models.CreateUserRequest) (*models.U
 			birthday = &parsedBirthday
 		}
 	}
-	user := &models.User{
+	user := &dbModels.User{
 		Name:     req.Name,
 		Email:    req.Email,
 		Age:      req.Age,
