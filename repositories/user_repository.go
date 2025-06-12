@@ -2,7 +2,6 @@ package repositories
 
 import (
 	"my-go-task/models"
-	"my-go-task/utils/postgres"
 
 	"gorm.io/gorm"
 )
@@ -24,9 +23,10 @@ func (r *UserRepository) GetAllUsers() ([]models.User, error) {
 	return users, err
 }
 func (r *UserRepository) CreateUser(user *models.User) error {
-	return postgres.DB.Create(user).Error
+	return r.db.Create(user).Error
 }
 
+// If implemented in normal way
 //	func GetAllUsers() ([]models.User, error) {
 //		var users []models.User
 //		err := postgres.DB.Find(&users).Error

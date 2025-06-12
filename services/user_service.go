@@ -21,7 +21,6 @@ func (s *UserService) GetAllUsersService() ([]models.User, error) {
 	return s.repo.GetAllUsers()
 }
 
-// func CreateUserService(req models.CreateUserRequest) (*models.User, error) {
 func (s *UserService) CreateUserService(req models.CreateUserRequest) (*models.User, error) {
 	// Manage nullable date field
 	var birthday *time.Time
@@ -48,6 +47,7 @@ func (s *UserService) CreateUserService(req models.CreateUserRequest) (*models.U
 	return user, nil
 }
 
+// If implemented in normal way
 // func GetAllUsersService() ([]models.User, error) {
 // 	return repositories.GetAllUsers()
 // }

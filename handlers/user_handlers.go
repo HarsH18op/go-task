@@ -32,7 +32,6 @@ func (h *UserHandler) GetUsers(c *gin.Context) {
 	})
 }
 
-// func CreateUser(c *gin.Context){
 func (h *UserHandler) CreateUser(c *gin.Context){
 	var userRequestData models.CreateUserRequest
 	if err := c.ShouldBind(&userRequestData); err != nil {
@@ -51,7 +50,7 @@ func (h *UserHandler) CreateUser(c *gin.Context){
 		return
 	}
 
-	// user, err := services.CreateUserService(userRequestData)
+	// user, err := services.CreateUserService(userRequestData) // If implemented in normal way
 	user, err := h.service.CreateUserService(userRequestData)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -63,5 +62,6 @@ func (h *UserHandler) CreateUser(c *gin.Context){
 	c.JSON(http.StatusCreated, gin.H{"message": "User created successfully.", "details": user})
 }
 
+// If implemented in normal way
 // func GetUsers(c *gin.Context) {
 // 	users, err := services.GetAllUsersService()

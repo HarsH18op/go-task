@@ -10,9 +10,9 @@ import (
 	"gorm.io/gorm"
 )
 
-var DB *gorm.DB
+// var DB *gorm.DB // If we want to access db object via global variable
 
-func ConnectDatabase() (*gorm.DB){
+func ConnectDatabase() *gorm.DB {
 	host := os.Getenv("DB_HOST")
 	port := os.Getenv("DB_PORT")
 	user := os.Getenv("DB_USER")
@@ -30,7 +30,7 @@ func ConnectDatabase() (*gorm.DB){
 	}
 	log.Println("✅ Connected to PostgreSQL with GORM!")
 
-	DB = db
+	// DB = db
 	db.AutoMigrate(&models.User{})
 	log.Println("✅ PostgreSQL database migrated successfully!")
 
