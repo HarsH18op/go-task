@@ -4,12 +4,15 @@ import (
 	"log"
 	"my-go-task/auth/models"
 	"my-go-task/auth/services"
-	my_validators "my-go-task/utils/validators"
+
+	// my_validators "my-go-task/utils/validators"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 )
+
+var validate = validator.New()
 
 // Struct that holds a reference to the service.
 type CreateUserHandler struct {
@@ -24,18 +27,42 @@ func NewCreateUserHandler(service *services.CreateUserService) *CreateUserHandle
 func (h *CreateUserHandler) CreateUser(c *gin.Context) {
 	var userRequestData models.CreateUserRequestModel
 	if err := c.ShouldBind(&userRequestData); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input", "details": err.Error()})
+		c.JSON(http.StatusBadRequest, models.ErrorResponse{
+			Message: "Invalid input",
+			Errors:  map[string]string{"body": err.Error()},
+		})
 		return
 	}
 
 	// This is required for validating data based on validations given in request struct
-	if err := my_validators.Validate.Struct(userRequestData); err != nil {
-		validationErrors := err.(validator.ValidationErrors)
-		errors := make(map[string]string)
-		for _, fieldErr := range validationErrors {
-			errors[fieldErr.Field()] = my_validators.ValidationMessage(fieldErr)
+	if err := validate.Struct(userRequestData); err != nil {
+		errorMap := make(map[string]string)
+		for _, fieldErr := range err.(validator.ValidationErrors) {
+			field := fieldErr.Field() // To access value of validation given
+			param := fieldErr.Param()
+			switch fieldErr.Tag() {
+			case "required":
+				errorMap[field] = "This field is required"
+			case "len":
+				errorMap[field] = "Length should be " + param
+			case "min":
+				errorMap[field] = "Too short"
+			case "max":
+				errorMap[field] = "Too long"
+			case "gte":
+				errorMap[field] = "Must be greater than " + param
+			case "lte":
+				errorMap[field] = "Must be less than or equal to " + param
+			case "datetime":
+				errorMap[field] = "Must be a valid date (YYYY-MM-DD)"
+			default:
+				errorMap[field] = "Invalid value"
+			}
 		}
-		c.JSON(http.StatusBadRequest, gin.H{"validation_errors": errors})
+		c.JSON(http.StatusBadRequest, models.ErrorResponse{
+			Message: "Validation failed",
+			Errors:  errorMap,
+		})
 		return
 	}
 
@@ -43,9 +70,9 @@ func (h *CreateUserHandler) CreateUser(c *gin.Context) {
 	user, err := h.service.CreateUserService(userRequestData)
 	log.Println(user)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error":   "Failed to create user",
-			"details": err.Error(), // actual DB error message
+		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
+			Message: "Failed to create user",
+			Errors:  map[string]string{"server": err.Error()},
 		})
 		return
 	}
