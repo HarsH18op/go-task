@@ -5,7 +5,6 @@ import (
 	"my-go-task/auth/models"
 	"my-go-task/auth/services"
 
-	// my_validators "my-go-task/utils/validators"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -24,10 +23,20 @@ func NewCreateUserHandler(service *services.CreateUserService) *CreateUserHandle
 	return &CreateUserHandler{service: service}
 }
 
+// @Summary Create a new user
+// @Description Creates a user with provided information
+// @Tags Users
+// @Accept json
+// @Produce json
+// @Param user body models.CreateUserRequestModel true "User data"
+// @Success 201 {object} models.CreateUserResponseModel
+// @Failure 400 {object} models.ErrorResponseModel
+// @Failure 500 {object} models.ErrorResponseModel
+// @Router /api/users [post]
 func (h *CreateUserHandler) CreateUser(c *gin.Context) {
 	var userRequestData models.CreateUserRequestModel
 	if err := c.ShouldBind(&userRequestData); err != nil {
-		c.JSON(http.StatusBadRequest, models.ErrorResponse{
+		c.JSON(http.StatusBadRequest, models.ErrorResponseModel{
 			Message: "Invalid input",
 			Errors:  map[string]string{"body": err.Error()},
 		})
@@ -59,7 +68,7 @@ func (h *CreateUserHandler) CreateUser(c *gin.Context) {
 				errorMap[field] = "Invalid value"
 			}
 		}
-		c.JSON(http.StatusBadRequest, models.ErrorResponse{
+		c.JSON(http.StatusBadRequest, models.ErrorResponseModel{
 			Message: "Validation failed",
 			Errors:  errorMap,
 		})
@@ -70,7 +79,7 @@ func (h *CreateUserHandler) CreateUser(c *gin.Context) {
 	user, err := h.service.CreateUserService(userRequestData)
 	log.Println(user)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
+		c.JSON(http.StatusInternalServerError, models.ErrorResponseModel{
 			Message: "Failed to create user",
 			Errors:  map[string]string{"server": err.Error()},
 		})

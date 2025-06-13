@@ -18,6 +18,14 @@ func NewGetUserHandler(service *services.GetUserService) *GetUserHandler {
 	return &GetUserHandler{service: service}
 }
 
+// @Summary Get all users
+// @Description Returns a list of all users
+// @Tags Users
+// @Accept json
+// @Produce json
+// @Success 200 {object} models.GetUserResponseModel
+// @Failure 500 {object} models.ErrorResponseModel
+// @Router /api/users [get]
 // This is the actual HTTP GET handler function.
 func (h *GetUserHandler) GetUsers(c *gin.Context) {
 	users, err := h.service.GetAllUsersService()

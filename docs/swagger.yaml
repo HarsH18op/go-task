@@ -1,4 +1,142 @@
+basePath: /
+definitions:
+  models.CreateUserRequestModel:
+    properties:
+      age:
+        description: optional
+        maximum: 120
+        minimum: 0
+        type: integer
+      bio:
+        description: optional
+        type: string
+      birthday:
+        description: optional, omitempty omits validations if it has no value
+        type: string
+      email:
+        type: string
+      mobile_number:
+        type: string
+      name:
+        type: string
+      pancard:
+        type: string
+    required:
+    - email
+    - mobile_number
+    - name
+    - pancard
+    type: object
+  models.CreateUserResponseModel:
+    properties:
+      age:
+        type: integer
+      bio:
+        type: string
+      birthday:
+        type: string
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      mobile_number:
+        type: string
+      name:
+        type: string
+      pancard:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  models.ErrorResponseModel:
+    properties:
+      errors:
+        additionalProperties:
+          type: string
+        description: Optional field-level validation errors
+        type: object
+      message:
+        description: General message
+        type: string
+    type: object
+  models.GetUserResponseModel:
+    properties:
+      age:
+        type: integer
+      bio:
+        type: string
+      birthday:
+        type: string
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      mobile_number:
+        type: string
+      name:
+        type: string
+      pancard:
+        type: string
+      updated_at:
+        type: string
+    type: object
+host: localhost:8000
 info:
   contact: {}
-paths: {}
+  description: This is a sample server for managing users.
+  title: User API
+  version: "1.0"
+paths:
+  /api/users:
+    get:
+      consumes:
+      - application/json
+      description: Returns a list of all users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GetUserResponseModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponseModel'
+      summary: Get all users
+      tags:
+      - Users
+    post:
+      consumes:
+      - application/json
+      description: Creates a user with provided information
+      parameters:
+      - description: User data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateUserRequestModel'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.CreateUserResponseModel'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponseModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponseModel'
+      summary: Create a new user
+      tags:
+      - Users
 swagger: "2.0"

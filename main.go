@@ -12,12 +12,14 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 
-	// swaggerFiles "github.com/swaggo/files"
-	// ginSwagger "github.com/swaggo/gin-swagger"
 	_ "my-go-task/docs"
-)
 
-// gin-swagger middleware
+	// Replace with your module name
+
+	ginSwagger "github.com/swaggo/gin-swagger"
+
+	swaggerFiles "github.com/swaggo/files"
+)
 
 // init() ensures it runs before your main()
 func init() {
@@ -29,6 +31,11 @@ func init() {
 	}
 }
 
+// @title User API
+// @version 1.0
+// @description This is a sample server for managing users.
+// @host localhost:8000
+// @BasePath /
 func main() {
 	// Connect to database
 	db := postgres.ConnectDatabase()
@@ -62,6 +69,6 @@ func main() {
 
 	port := os.Getenv("SERVER_PORT")
 
-	// router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	router.Run(":" + port)
 }
