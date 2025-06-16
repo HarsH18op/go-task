@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"log"
 	"my-go-task/dbModels"
-	"os"
+
+	"github.com/spf13/viper"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -12,17 +13,35 @@ import (
 
 // var DB *gorm.DB // If we want to access db object via global variable
 
+type DBConfig struct {
+	Host     string
+	Port     string
+	User     string
+	Password string
+	Name     string
+}
+
+func loadYAMLConfig(filename string, key string, target any) {
+	v := viper.New()
+	v.SetConfigFile(filename)
+	v.SetConfigType("yaml")
+
+	if err := v.ReadInConfig(); err != nil {
+		log.Fatalf("Error reading config %s: %v", filename, err)
+	}
+	if err := v.Sub(key).Unmarshal(target); err != nil {
+		log.Fatalf("Error unmarshaling config %s: %v", filename, err)
+	}
+}
+
 func ConnectDatabase() *gorm.DB {
-	host := os.Getenv("DB_HOST")
-	port := os.Getenv("DB_PORT")
-	user := os.Getenv("DB_USER")
-	password := os.Getenv("DB_PASSWORD")
-	dbname := os.Getenv("DB_NAME")
+	var dbConfig DBConfig
+	loadYAMLConfig("configs/postgresDb.yml", "database", &dbConfig)
+	log.Println("✅ Database configs loaded from yaml files!")
 
 	dsn := fmt.Sprintf(
 		"host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
-		host, user, password, dbname, port,
-	)
+		dbConfig.Host, dbConfig.User, dbConfig.Password, dbConfig.Name, dbConfig.Port)
 
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
