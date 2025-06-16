@@ -4,12 +4,13 @@ import (
 	"log"
 	"my-go-task/auth/handlers"
 	"my-go-task/auth/repositories"
-	watchlistHandler "my-go-task/watchlist/handlers"
-	watchlistService "my-go-task/watchlist/services"
-	watchlistRepo "my-go-task/watchlist/repositories"
+	userRouter "my-go-task/auth/router"
 	"my-go-task/auth/services"
-	"my-go-task/routes"
 	"my-go-task/utils/postgres"
+	watchlistHandler "my-go-task/watchlist/handlers"
+	watchlistRepo "my-go-task/watchlist/repositories"
+	watchlistRouter "my-go-task/watchlist/router"
+	watchlistService "my-go-task/watchlist/services"
 	"os"
 
 	"github.com/gin-gonic/gin"
@@ -64,8 +65,8 @@ func main() {
 	// Grouped API routes
 	api := router.Group("/api")
 	{
-		routes.UserApiRoutes(api, userHandler1, userHandler2)
-		routes.WatchlistApiRoutes(api, watchlistHandler)
+		userRouter.UserApiRoutes(api, userHandler1, userHandler2)
+		watchlistRouter.WatchlistApiRoutes(api, watchlistHandler)
 	}
 
 	port := os.Getenv("SERVER_PORT")

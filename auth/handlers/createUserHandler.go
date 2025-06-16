@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"log"
 	"my-go-task/auth/models"
 	"my-go-task/auth/services"
 
@@ -78,7 +77,6 @@ func (h *CreateUserHandler) CreateUser(c *gin.Context) {
 
 	// user, err := services.CreateUserService(userRequestData) // If implemented in normal way
 	user, err := h.service.CreateUserService(userRequestData)
-	log.Println(user)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, models.ErrorResponseModel{
 			Message: "Failed to create user",

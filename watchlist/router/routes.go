@@ -7,6 +7,6 @@ import (
 )
 
 func WatchlistApiRoutes(rg *gin.RouterGroup, handler *handlers.WatchlistHandler) {
-	// rg.GET("/users", handler.GetUsers)
+	rg.GET("/watchlists", handler.GetWatchlists)
 	rg.POST("/watchlists", handler.CreateWatchlist)
 }

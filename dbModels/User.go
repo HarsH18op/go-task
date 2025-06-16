@@ -1,7 +1,6 @@
 package dbModels
 
 import (
-	"log"
 	"time"
 
 	"gorm.io/gorm"
@@ -33,7 +32,6 @@ func (User) TableName() string {
 func UserExists(db *gorm.DB, userID uint) (bool, error) {
 	var count int64
 	err := db.Model(&User{}).Where("id = ?", userID).Count(&count).Error
-	log.Println(count, "************")
 	if err != nil {
 		return false, err
 	}
