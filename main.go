@@ -4,8 +4,11 @@ import (
 	"log"
 	"my-go-task/auth/handlers"
 	"my-go-task/auth/repositories"
+	watchlistHandler "my-go-task/watchlist/handlers"
+	watchlistService "my-go-task/watchlist/services"
+	watchlistRepo "my-go-task/watchlist/repositories"
 	"my-go-task/auth/services"
-	userRoutes "my-go-task/routes"
+	"my-go-task/routes"
 	"my-go-task/utils/postgres"
 	"os"
 
@@ -47,6 +50,10 @@ func main() {
 	userHandler1 := handlers.NewGetUserHandler(userService1)
 	userHandler2 := handlers.NewCreateUserHandler(userService2)
 
+	watchlistRepo := watchlistRepo.NewWatchlistRepository(db)
+	watchlistService := watchlistService.NewWatchlistService(watchlistRepo)
+	watchlistHandler := watchlistHandler.NewWatchlistHandler(watchlistService)
+
 	// Create a default router
 	router := gin.Default()
 	// router.Use(func(c *gin.Context) {
@@ -54,17 +61,11 @@ func main() {
 	//     c.Next()
 	// })
 
-	// Define a route
-	router.GET("/api/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
-
 	// Grouped API routes
 	api := router.Group("/api")
 	{
-		userRoutes.UserApiRoutes(api, userHandler1, userHandler2)
+		routes.UserApiRoutes(api, userHandler1, userHandler2)
+		routes.WatchlistApiRoutes(api, watchlistHandler)
 	}
 
 	port := os.Getenv("SERVER_PORT")

@@ -1,4 +1,4 @@
-package userRoutes
+package routes
 
 import (
 	"my-go-task/auth/handlers"

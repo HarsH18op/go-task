@@ -47,6 +47,7 @@ func (h *CreateUserHandler) CreateUser(c *gin.Context) {
 	if err := validate.Struct(userRequestData); err != nil {
 		errorMap := make(map[string]string)
 		for _, fieldErr := range err.(validator.ValidationErrors) {
+			// errorMap[fieldErr.Field()] = fieldErr.Error() // For showing default error message from validator
 			field := fieldErr.Field() // To access value of validation given
 			param := fieldErr.Param()
 			switch fieldErr.Tag() {

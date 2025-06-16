@@ -31,7 +31,7 @@ func ConnectDatabase() *gorm.DB {
 	log.Println("✅ Connected to PostgreSQL with GORM!")
 
 	// DB = db
-	db.AutoMigrate(&dbModels.User{})
+	db.AutoMigrate(&dbModels.User{}, &dbModels.Watchlist{}, &dbModels.WatchlistScript{})
 	log.Println("✅ PostgreSQL database migrated successfully!")
 
 	return db
