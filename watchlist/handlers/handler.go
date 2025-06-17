@@ -1,6 +1,6 @@
 package handlers
 
-import "my-go-task/watchlist/services"
+import services "my-go-task/watchlist/business"
 
 // Struct that holds a reference to the service.
 type WatchlistHandler struct {

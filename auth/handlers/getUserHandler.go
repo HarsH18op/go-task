@@ -1,8 +1,8 @@
 package handlers
 
 import (
+	services "my-go-task/auth/business"
 	"my-go-task/auth/models"
-	"my-go-task/auth/services"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

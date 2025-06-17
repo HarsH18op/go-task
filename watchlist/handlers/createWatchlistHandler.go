@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"log"
+	constants "my-go-task/watchlist/commons"
 	"my-go-task/watchlist/models"
 
 	"net/http"
@@ -24,9 +26,10 @@ var validate = validator.New()
 func (h *WatchlistHandler) CreateWatchlist(c *gin.Context) {
 	var watchlistRequestData models.CreateWatchlistRequestModel
 	if err := c.ShouldBind(&watchlistRequestData); err != nil {
+		log.Println(err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponseModel{
-			Message: "Invalid input",
-			Errors:  map[string]string{"body": err.Error()},
+			Message: constants.WATCHLIST_CREATION_ERRORS.InvalidInputError.Error(),
+			// Errors:  map[string]string{"body": err.Error()},
 		})
 		return
 	}
@@ -44,7 +47,7 @@ func (h *WatchlistHandler) CreateWatchlist(c *gin.Context) {
 			}
 		}
 		c.JSON(http.StatusBadRequest, models.ErrorResponseModel{
-			Message: "Validation failed",
+			Message: constants.WATCHLIST_CREATION_ERRORS.ValidationFailedError.Error(),
 			Errors:  errorMap,
 		})
 		return
@@ -52,17 +55,18 @@ func (h *WatchlistHandler) CreateWatchlist(c *gin.Context) {
 
 	watchlist, err := h.service.CreateWatchlistService(watchlistRequestData)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, models.ErrorResponseModel{
-			Message: "Failed to create watchlist",
-			Errors:  map[string]string{"server": err.Error()},
-		})
+		log.Println(err.Error())
+		if constants.IsClientError(err) {
+			c.JSON(http.StatusBadRequest, models.ErrorResponseModel{Message: err.Error()})
+		} else {
+			c.JSON(http.StatusInternalServerError, models.ErrorResponseModel{Message: constants.WATCHLIST_CREATION_ERRORS.InternalServerError.Error()})
+		}
 		return
 	}
-
 	// Convert DB models to response format
 	response := models.CreateWatchlistResponseModel{
 		ID:      watchlist.ID,
-		Message: "Watchlist created successfully.",
+		Message: constants.WATCHLIST_CREATION_SUCCESS_MESSAGE,
 	}
 	c.JSON(http.StatusCreated, response)
 }

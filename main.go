@@ -2,15 +2,15 @@ package main
 
 import (
 	"log"
+	services "my-go-task/auth/business"
 	"my-go-task/auth/handlers"
 	"my-go-task/auth/repositories"
 	userRouter "my-go-task/auth/router"
-	"my-go-task/auth/services"
 	"my-go-task/utils/postgres"
 	watchlistHandler "my-go-task/watchlist/handlers"
 	watchlistRepo "my-go-task/watchlist/repositories"
 	watchlistRouter "my-go-task/watchlist/router"
-	watchlistService "my-go-task/watchlist/services"
+	watchlistService "my-go-task/watchlist/business"
 	"os"
 
 	"github.com/gin-gonic/gin"

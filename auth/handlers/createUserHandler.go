@@ -1,8 +1,10 @@
 package handlers
 
 import (
+	"log"
+	services "my-go-task/auth/business"
+	constants "my-go-task/auth/commons"
 	"my-go-task/auth/models"
-	"my-go-task/auth/services"
 
 	"net/http"
 
@@ -35,15 +37,17 @@ func NewCreateUserHandler(service *services.CreateUserService) *CreateUserHandle
 func (h *CreateUserHandler) CreateUser(c *gin.Context) {
 	var userRequestData models.CreateUserRequestModel
 	if err := c.ShouldBind(&userRequestData); err != nil {
+		log.Println(err.Error())
 		c.JSON(http.StatusBadRequest, models.ErrorResponseModel{
-			Message: "Invalid input",
-			Errors:  map[string]string{"body": err.Error()},
+			Message: constants.USER_CREATION_ERRORS.InvalidInputError.Error(),
+			// Errors:  map[string]string{"body": err.Error()},
 		})
 		return
 	}
 
 	// This is required for validating data based on validations given in request struct
 	if err := validate.Struct(userRequestData); err != nil {
+		log.Println(err.Error())
 		errorMap := make(map[string]string)
 		for _, fieldErr := range err.(validator.ValidationErrors) {
 			// errorMap[fieldErr.Field()] = fieldErr.Error() // For showing default error message from validator
@@ -69,7 +73,7 @@ func (h *CreateUserHandler) CreateUser(c *gin.Context) {
 			}
 		}
 		c.JSON(http.StatusBadRequest, models.ErrorResponseModel{
-			Message: "Validation failed",
+			Message: constants.USER_CREATION_ERRORS.ValidationFailedError.Error(),
 			Errors:  errorMap,
 		})
 		return
@@ -79,33 +83,18 @@ func (h *CreateUserHandler) CreateUser(c *gin.Context) {
 	user, err := h.service.CreateUserService(userRequestData)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, models.ErrorResponseModel{
-			Message: "Failed to create user",
+			Message: constants.USER_CREATION_ERRORS.InternalServerError.Error(),
 			Errors:  map[string]string{"server": err.Error()},
 		})
 		return
 	}
 
 	// Convert DB models to response format
-	var response models.CreateUserResponseModel
-	var birthday *string
-	if user.Birthday != nil {
-		b := user.Birthday.Format("2006-01-02")
-		birthday = &b
+	response := models.CreateUserResponseModel{
+		ID:      user.ID,
+		Message: constants.USER_CREATION_SUCCESS_MESSAGE,
 	}
-
-	response = models.CreateUserResponseModel{
-		ID:        user.ID,
-		Name:      user.Name,
-		Email:     user.Email,
-		Age:       user.Age,
-		Pancard:   user.Pancard,
-		Mobile:    user.Mobile,
-		Bio:       user.Bio,
-		Birthday:  birthday,
-		CreatedAt: user.CreatedAt.Format("2006-01-02 15:04:05"),
-		UpdatedAt: user.UpdatedAt.Format("2006-01-02 15:04:05"),
-	}
-	c.JSON(http.StatusCreated, gin.H{"message": "User created successfully.", "details": response})
+	c.JSON(http.StatusCreated, response)
 }
 
 // If implemented in normal way

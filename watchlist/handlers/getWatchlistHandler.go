@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"log"
 	"my-go-task/watchlist/models"
 	"net/http"
 	"strconv"
@@ -30,7 +29,6 @@ func (h *WatchlistHandler) GetWatchlists(c *gin.Context) {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
-	log.Println(watchlists, "@@@@@@@@@")
 
 	// Convert DB models to response format
 	var response = make([]models.GetWatchlistResponseModel, 0)

@@ -36,7 +36,7 @@ func loadYAMLConfig(filename string, key string, target any) {
 
 func ConnectDatabase() *gorm.DB {
 	var dbConfig DBConfig
-	loadYAMLConfig("configs/postgresDb.yml", "database", &dbConfig)
+	loadYAMLConfig("configs/postgresDb.yaml", "database", &dbConfig)
 	log.Println("✅ Database configs loaded from yaml files!")
 
 	dsn := fmt.Sprintf(

@@ -6,9 +6,9 @@ type GetUserResponseModel struct {
 	Name      string  `json:"name"`
 	Email     string  `json:"email"`
 	Pancard   string  `json:"pancard"`
-	Mobile    string  `json:"mobile_number"`
+	Mobile    string  `json:"mobileNumber"`
 	Bio       string  `json:"bio"`
 	Birthday  *string `json:"birthday"`
-	CreatedAt string  `json:"created_at"`
-	UpdatedAt string  `json:"updated_at"`
+	CreatedAt string  `json:"createdAt"`
+	UpdatedAt string  `json:"updatedAt"`
 }

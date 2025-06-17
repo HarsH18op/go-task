@@ -1,8 +1,8 @@
 package services
 
 import (
-	"fmt"
 	"my-go-task/dbModels"
+	constants "my-go-task/watchlist/commons"
 	"my-go-task/watchlist/models"
 )
 
@@ -10,10 +10,10 @@ func (s *WatchlistService) CreateWatchlistService(req models.CreateWatchlistRequ
 	// Validate UserID before creating watchlist
 	exists, err := dbModels.UserExists(s.repo.Db, req.UserId) // assuming repo has db *gorm.DB
 	if err != nil {
-		return nil, fmt.Errorf("error checking user existence: %w", err)
+		return nil, constants.WATCHLIST_CREATION_ERRORS.UserExistenceError
 	}
 	if !exists {
-		return nil, fmt.Errorf("user with ID %d does not exist", req.UserId)
+		return nil, constants.WATCHLIST_CREATION_ERRORS.UserNotFoundError
 	}
 
 	watchlist := &dbModels.Watchlist{
