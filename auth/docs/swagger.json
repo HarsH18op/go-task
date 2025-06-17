@@ -9,7 +9,7 @@
     "host": "localhost:8000",
     "basePath": "/",
     "paths": {
-        "/api/users": {
+        "/api/auth/users": {
             "get": {
                 "description": "Returns a list of all users",
                 "consumes": [
@@ -124,35 +124,11 @@
         "models.CreateUserResponseModel": {
             "type": "object",
             "properties": {
-                "age": {
+                "message": {
+                    "type": "string"
+                },
+                "userId": {
                     "type": "integer"
-                },
-                "bio": {
-                    "type": "string"
-                },
-                "birthday": {
-                    "type": "string"
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "mobile_number": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "pancard": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
                 }
             }
         },
@@ -184,7 +160,7 @@
                 "birthday": {
                     "type": "string"
                 },
-                "created_at": {
+                "createdAt": {
                     "type": "string"
                 },
                 "email": {
@@ -193,7 +169,7 @@
                 "id": {
                     "type": "integer"
                 },
-                "mobile_number": {
+                "mobileNumber": {
                     "type": "string"
                 },
                 "name": {
@@ -202,7 +178,7 @@
                 "pancard": {
                     "type": "string"
                 },
-                "updated_at": {
+                "updatedAt": {
                     "type": "string"
                 }
             }

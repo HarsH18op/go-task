@@ -33,7 +33,7 @@ func NewCreateUserHandler(service *services.CreateUserService) *CreateUserHandle
 // @Success 201 {object} models.CreateUserResponseModel
 // @Failure 400 {object} models.ErrorResponseModel
 // @Failure 500 {object} models.ErrorResponseModel
-// @Router /api/users [post]
+// @Router /api/auth/users [post]
 func (h *CreateUserHandler) CreateUser(c *gin.Context) {
 	var userRequestData models.CreateUserRequestModel
 	if err := c.ShouldBind(&userRequestData); err != nil {

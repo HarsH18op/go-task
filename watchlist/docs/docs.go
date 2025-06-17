@@ -15,9 +15,9 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/api/users": {
+        "/api/watchlist/watchlists": {
             "get": {
-                "description": "Returns a list of all users",
+                "description": "Returns a list of all watchlists",
                 "consumes": [
                     "application/json"
                 ],
@@ -25,14 +25,14 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Users"
+                    "Watchlists"
                 ],
-                "summary": "Get all users",
+                "summary": "Get all watchlists",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.GetUserResponseModel"
+                            "$ref": "#/definitions/models.GetWatchlistResponseModel"
                         }
                     },
                     "500": {
@@ -44,7 +44,7 @@ const docTemplate = `{
                 }
             },
             "post": {
-                "description": "Creates a user with provided information",
+                "description": "Creates a watchlist with provided information",
                 "consumes": [
                     "application/json"
                 ],
@@ -52,17 +52,17 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Users"
+                    "Watchlists"
                 ],
-                "summary": "Create a new user",
+                "summary": "Create a new watchlist",
                 "parameters": [
                     {
-                        "description": "User data",
-                        "name": "user",
+                        "description": "Watchlist data",
+                        "name": "watchlist",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.CreateUserRequestModel"
+                            "$ref": "#/definitions/models.CreateWatchlistRequestModel"
                         }
                     }
                 ],
@@ -70,7 +70,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/models.CreateUserResponseModel"
+                            "$ref": "#/definitions/models.CreateWatchlistResponseModel"
                         }
                     },
                     "400": {
@@ -90,75 +90,29 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "models.CreateUserRequestModel": {
+        "models.CreateWatchlistRequestModel": {
             "type": "object",
             "required": [
-                "email",
-                "mobile_number",
                 "name",
-                "pancard"
+                "userId"
             ],
             "properties": {
-                "age": {
-                    "description": "optional",
-                    "type": "integer",
-                    "maximum": 120,
-                    "minimum": 0
-                },
-                "bio": {
-                    "description": "optional",
-                    "type": "string"
-                },
-                "birthday": {
-                    "description": "optional, omitempty omits validations if it has no value",
-                    "type": "string"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "mobile_number": {
-                    "type": "string"
-                },
                 "name": {
                     "type": "string"
                 },
-                "pancard": {
-                    "type": "string"
+                "userId": {
+                    "type": "integer"
                 }
             }
         },
-        "models.CreateUserResponseModel": {
+        "models.CreateWatchlistResponseModel": {
             "type": "object",
             "properties": {
-                "age": {
+                "message": {
+                    "type": "string"
+                },
+                "watchlistId": {
                     "type": "integer"
-                },
-                "bio": {
-                    "type": "string"
-                },
-                "birthday": {
-                    "type": "string"
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "mobile_number": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "pancard": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
                 }
             }
         },
@@ -166,7 +120,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "errors": {
-                    "description": "Optional field-level validation errors",
+                    "description": "Optional field-level validation errors, omit if not exists in payload",
                     "type": "object",
                     "additionalProperties": {
                         "type": "string"
@@ -178,37 +132,13 @@ const docTemplate = `{
                 }
             }
         },
-        "models.GetUserResponseModel": {
+        "models.GetWatchlistResponseModel": {
             "type": "object",
             "properties": {
-                "age": {
+                "watchlistId": {
                     "type": "integer"
                 },
-                "bio": {
-                    "type": "string"
-                },
-                "birthday": {
-                    "type": "string"
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "mobile_number": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "pancard": {
-                    "type": "string"
-                },
-                "updated_at": {
+                "watchlistName": {
                     "type": "string"
                 }
             }
@@ -222,8 +152,8 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "localhost:8000",
 	BasePath:         "/",
 	Schemes:          []string{},
-	Title:            "User API",
-	Description:      "This is a sample server for managing users.",
+	Title:            "Watchlist API",
+	Description:      "This is a sample server for managing watchlists.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",
@@ -231,5 +161,5 @@ var SwaggerInfo = &swag.Spec{
 }
 
 func init() {
-	swag.Register(SwaggerInfo.InstanceName(), SwaggerInfo)
+	swag.Register("watchlist", SwaggerInfo)
 }

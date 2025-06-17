@@ -22,7 +22,7 @@ var validate = validator.New()
 // @Success 201 {object} models.CreateWatchlistResponseModel
 // @Failure 400 {object} models.ErrorResponseModel
 // @Failure 500 {object} models.ErrorResponseModel
-// @Router /api/watchlists [post]
+// @Router /api/watchlist/watchlists [post]
 func (h *WatchlistHandler) CreateWatchlist(c *gin.Context) {
 	var watchlistRequestData models.CreateWatchlistRequestModel
 	if err := c.ShouldBind(&watchlistRequestData); err != nil {

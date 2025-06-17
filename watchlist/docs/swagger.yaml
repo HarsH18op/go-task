@@ -1,0 +1,94 @@
+basePath: /
+definitions:
+  models.CreateWatchlistRequestModel:
+    properties:
+      name:
+        type: string
+      userId:
+        type: integer
+    required:
+    - name
+    - userId
+    type: object
+  models.CreateWatchlistResponseModel:
+    properties:
+      message:
+        type: string
+      watchlistId:
+        type: integer
+    type: object
+  models.ErrorResponseModel:
+    properties:
+      errors:
+        additionalProperties:
+          type: string
+        description: Optional field-level validation errors, omit if not exists in
+          payload
+        type: object
+      message:
+        description: General message
+        type: string
+    type: object
+  models.GetWatchlistResponseModel:
+    properties:
+      watchlistId:
+        type: integer
+      watchlistName:
+        type: string
+    type: object
+host: localhost:8000
+info:
+  contact: {}
+  description: This is a sample server for managing watchlists.
+  title: Watchlist API
+  version: "1.0"
+paths:
+  /api/watchlist/watchlists:
+    get:
+      consumes:
+      - application/json
+      description: Returns a list of all watchlists
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GetWatchlistResponseModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponseModel'
+      summary: Get all watchlists
+      tags:
+      - Watchlists
+    post:
+      consumes:
+      - application/json
+      description: Creates a watchlist with provided information
+      parameters:
+      - description: Watchlist data
+        in: body
+        name: watchlist
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateWatchlistRequestModel'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.CreateWatchlistResponseModel'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponseModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponseModel'
+      summary: Create a new watchlist
+      tags:
+      - Watchlists
+swagger: "2.0"

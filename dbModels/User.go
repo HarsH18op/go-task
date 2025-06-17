@@ -21,7 +21,6 @@ type User struct {
 	// Watchlists []Watchlist `gorm:"foreignKey:UserUUID;references:Mobile"` // references a field other than ID
 	// Watchlists []Watchlist `gorm:"foreignKey:UserID;constraint:OnDelete:CASCADE"`
 	// Options: CASCADE, SET NULL, SET DEFAULT, RESTRICT, NO ACTION
-
 }
 
 // Override default table name "users"

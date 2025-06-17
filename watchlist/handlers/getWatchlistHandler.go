@@ -15,7 +15,7 @@ import (
 // @Produce json
 // @Success 200 {object} models.GetWatchlistResponseModel
 // @Failure 500 {object} models.ErrorResponseModel
-// @Router /api/watchlists [get]
+// @Router /api/watchlist/watchlists [get]
 // This is the actual HTTP GET handler function.
 func (h *WatchlistHandler) GetWatchlists(c *gin.Context) {
 	userIDStr := c.Query("user_id")

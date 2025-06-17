@@ -1,0 +1,141 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a sample server for managing watchlists.",
+        "title": "Watchlist API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:8000",
+    "basePath": "/",
+    "paths": {
+        "/api/watchlist/watchlists": {
+            "get": {
+                "description": "Returns a list of all watchlists",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Watchlists"
+                ],
+                "summary": "Get all watchlists",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.GetWatchlistResponseModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponseModel"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Creates a watchlist with provided information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Watchlists"
+                ],
+                "summary": "Create a new watchlist",
+                "parameters": [
+                    {
+                        "description": "Watchlist data",
+                        "name": "watchlist",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.CreateWatchlistRequestModel"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.CreateWatchlistResponseModel"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponseModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponseModel"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.CreateWatchlistRequestModel": {
+            "type": "object",
+            "required": [
+                "name",
+                "userId"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.CreateWatchlistResponseModel": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "watchlistId": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.ErrorResponseModel": {
+            "type": "object",
+            "properties": {
+                "errors": {
+                    "description": "Optional field-level validation errors, omit if not exists in payload",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
+                "message": {
+                    "description": "General message",
+                    "type": "string"
+                }
+            }
+        },
+        "models.GetWatchlistResponseModel": {
+            "type": "object",
+            "properties": {
+                "watchlistId": {
+                    "type": "integer"
+                },
+                "watchlistName": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
