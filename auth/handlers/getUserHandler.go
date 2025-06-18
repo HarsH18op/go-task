@@ -1,22 +1,11 @@
 package handlers
 
 import (
-	services "my-go-task/auth/business"
 	"my-go-task/auth/models"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
-
-// Struct that holds a reference to the service.
-type GetUserHandler struct {
-	service *services.GetUserService
-}
-
-// Constructor to create a handler using the given service.
-func NewGetUserHandler(service *services.GetUserService) *GetUserHandler {
-	return &GetUserHandler{service: service}
-}
 
 // @Summary Get all users
 // @Description Returns a list of all users
@@ -27,7 +16,7 @@ func NewGetUserHandler(service *services.GetUserService) *GetUserHandler {
 // @Failure 500 {object} models.ErrorResponseModel
 // @Router /api/auth/users [get]
 // This is the actual HTTP GET handler function.
-func (h *GetUserHandler) GetUsers(c *gin.Context) {
+func (h *UserHandler) GetUsers(c *gin.Context) {
 	users, err := h.service.GetAllUsersService()
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})

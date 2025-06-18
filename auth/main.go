@@ -36,14 +36,11 @@ func StartAuthServer(db *gorm.DB) {
 	router := gin.Default()
 	authGroup := router.Group("/api/auth")
 
-	userRepo1 := repositories.NewGetUserRepository(db)
-	userRepo2 := repositories.NewCreateUserRepository(db)
-	userService1 := services.NewGetUserService(userRepo1)
-	userService2 := services.NewCreateUserService(userRepo2)
-	userHandler1 := handlers.NewGetUserHandler(userService1)
-	userHandler2 := handlers.NewCreateUserHandler(userService2)
+	repo := repositories.NewUserRepository(db)
+	service := services.NewUserService(repo)
+	handler := handlers.NewUserHandler(service)
 
-	routes.UserApiRoutes(authGroup, userHandler1, userHandler2)
+	routes.UserApiRoutes(authGroup, handler)
 	authGroup.GET("/swagger/*any", ginSwagger.WrapHandler(
 		swaggerFiles.Handler, ginSwagger.InstanceName("auth")))
 	router.Run(":" + os.Getenv("AUTH_PORT"))

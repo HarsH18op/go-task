@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func UserApiRoutes(rg *gin.RouterGroup, handler *handlers.GetUserHandler, handler2 *handlers.CreateUserHandler) {
+func UserApiRoutes(rg *gin.RouterGroup, handler *handlers.UserHandler) {
 	rg.GET(constants.USER_ROUTES.GET_USERS, handler.GetUsers)
-	rg.POST(constants.USER_ROUTES.CREATE_USER, handler2.CreateUser)
+	rg.POST(constants.USER_ROUTES.CREATE_USER, handler.CreateUser)
 }

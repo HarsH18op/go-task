@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"log"
-	services "my-go-task/auth/business"
 	constants "my-go-task/auth/commons"
 	"my-go-task/auth/models"
 
@@ -14,16 +13,6 @@ import (
 
 var validate = validator.New()
 
-// Struct that holds a reference to the service.
-type CreateUserHandler struct {
-	service *services.CreateUserService
-}
-
-// Constructor to create a handler using the given service.
-func NewCreateUserHandler(service *services.CreateUserService) *CreateUserHandler {
-	return &CreateUserHandler{service: service}
-}
-
 // @Summary Create a new user
 // @Description Creates a user with provided information
 // @Tags Users
@@ -34,7 +23,7 @@ func NewCreateUserHandler(service *services.CreateUserService) *CreateUserHandle
 // @Failure 400 {object} models.ErrorResponseModel
 // @Failure 500 {object} models.ErrorResponseModel
 // @Router /api/auth/users [post]
-func (h *CreateUserHandler) CreateUser(c *gin.Context) {
+func (h *UserHandler) CreateUser(c *gin.Context) {
 	var userRequestData models.CreateUserRequestModel
 	if err := c.ShouldBind(&userRequestData); err != nil {
 		log.Println(err.Error())
