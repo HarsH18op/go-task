@@ -3,8 +3,10 @@ definitions:
   models.CreateWatchlistRequestModel:
     properties:
       name:
+        example: Range Rover
         type: string
       userId:
+        example: 1
         type: integer
     required:
     - name
@@ -13,8 +15,10 @@ definitions:
   models.CreateWatchlistResponseModel:
     properties:
       message:
+        example: Watchlist created
         type: string
       watchlistId:
+        example: 1
         type: integer
     type: object
   models.ErrorResponseModel:
@@ -22,21 +26,25 @@ definitions:
       errors:
         additionalProperties:
           type: string
-        description: Optional field-level validation errors, omit if not exists in
-          payload
+        description: Optional field-level validation errors
+        example:
+          name: must be valid name
         type: object
       message:
         description: General message
+        example: invalid input data
         type: string
     type: object
   models.GetWatchlistResponseModel:
     properties:
       watchlistId:
+        example: 1
         type: integer
       watchlistName:
+        example: Range Rover
         type: string
     type: object
-host: localhost:8000
+host: localhost:8082
 info:
   contact: {}
   description: This is a sample server for managing watchlists.

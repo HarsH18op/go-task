@@ -1,6 +1,6 @@
 package models
 
 type GetWatchlistResponseModel struct {
-	ID          uint   `json:"watchlistId"`
-	Name        string `json:"watchlistName"`
+	ID   uint   `json:"watchlistId" example:"1"`
+	Name string `json:"watchlistName" example:"Range Rover"`
 }

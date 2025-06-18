@@ -4,22 +4,29 @@ definitions:
     properties:
       age:
         description: optional
+        example: 18
         maximum: 120
         minimum: 0
         type: integer
       bio:
         description: optional
+        example: I am Harsh
         type: string
       birthday:
         description: optional, omitempty omits validations if it has no value
+        example: "2001-04-30"
         type: string
       email:
+        example: abd@gmail.com
         type: string
       mobile_number:
+        example: "9898009898"
         type: string
       name:
+        example: Harsh
         type: string
       pancard:
+        example: ABCDE12345
         type: string
     required:
     - email
@@ -29,10 +36,12 @@ definitions:
     type: object
   models.CreateUserResponseModel:
     properties:
-      message:
-        type: string
-      userId:
+      id:
+        example: 1
         type: integer
+      message:
+        example: User created successfully
+        type: string
     type: object
   models.ErrorResponseModel:
     properties:
@@ -40,35 +49,48 @@ definitions:
         additionalProperties:
           type: string
         description: Optional field-level validation errors
+        example:
+          email: must be a valid email address
         type: object
       message:
         description: General message
+        example: invalid input data
         type: string
     type: object
   models.GetUserResponseModel:
     properties:
       age:
+        example: 25
         type: integer
       bio:
+        example: I'm Harsh
         type: string
       birthday:
+        example: "2001-04-30"
         type: string
       createdAt:
+        example: "2025-06-15 11:00:00"
         type: string
       email:
+        example: abd@gmail.com
         type: string
       id:
+        example: 1
         type: integer
       mobileNumber:
+        example: "9898009898"
         type: string
       name:
+        example: Harsh
         type: string
       pancard:
+        example: ABCDE12345
         type: string
       updatedAt:
+        example: "2025-06-15 11:00:00"
         type: string
     type: object
-host: localhost:8000
+host: localhost:8081
 info:
   contact: {}
   description: This is a sample server for managing users.

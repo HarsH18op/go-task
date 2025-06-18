@@ -27,7 +27,7 @@ import (
 // @title User API
 // @version 1.0
 // @description This is a sample server for managing users.
-// @host localhost:8000
+// @host localhost:8081
 // @BasePath /
 func StartAuthServer(db *gorm.DB) {
 	// func main() {

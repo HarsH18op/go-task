@@ -27,7 +27,7 @@ import (
 // @title Watchlist API
 // @version 1.0
 // @description This is a sample server for managing watchlists.
-// @host localhost:8000
+// @host localhost:8082
 // @BasePath /
 func StartWatchlistServer(db *gorm.DB) {
 	// func main() {

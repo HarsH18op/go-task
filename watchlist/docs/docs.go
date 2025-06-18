@@ -98,10 +98,12 @@ const docTemplate = `{
             ],
             "properties": {
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Range Rover"
                 },
                 "userId": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 }
             }
         },
@@ -109,10 +111,12 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "message": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Watchlist created"
                 },
                 "watchlistId": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 }
             }
         },
@@ -120,15 +124,19 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "errors": {
-                    "description": "Optional field-level validation errors, omit if not exists in payload",
+                    "description": "Optional field-level validation errors",
                     "type": "object",
                     "additionalProperties": {
                         "type": "string"
+                    },
+                    "example": {
+                        "name": "must be valid name"
                     }
                 },
                 "message": {
                     "description": "General message",
-                    "type": "string"
+                    "type": "string",
+                    "example": "invalid input data"
                 }
             }
         },
@@ -136,10 +144,12 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "watchlistId": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "watchlistName": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Range Rover"
                 }
             }
         }
@@ -149,7 +159,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost:8000",
+	Host:             "localhost:8082",
 	BasePath:         "/",
 	Schemes:          []string{},
 	Title:            "Watchlist API",

@@ -103,38 +103,47 @@ const docTemplate = `{
                     "description": "optional",
                     "type": "integer",
                     "maximum": 120,
-                    "minimum": 0
+                    "minimum": 0,
+                    "example": 18
                 },
                 "bio": {
                     "description": "optional",
-                    "type": "string"
+                    "type": "string",
+                    "example": "I am Harsh"
                 },
                 "birthday": {
                     "description": "optional, omitempty omits validations if it has no value",
-                    "type": "string"
+                    "type": "string",
+                    "example": "2001-04-30"
                 },
                 "email": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "abd@gmail.com"
                 },
                 "mobile_number": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "9898009898"
                 },
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Harsh"
                 },
                 "pancard": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "ABCDE12345"
                 }
             }
         },
         "models.CreateUserResponseModel": {
             "type": "object",
             "properties": {
-                "message": {
-                    "type": "string"
+                "id": {
+                    "type": "integer",
+                    "example": 1
                 },
-                "userId": {
-                    "type": "integer"
+                "message": {
+                    "type": "string",
+                    "example": "User created successfully"
                 }
             }
         },
@@ -146,11 +155,15 @@ const docTemplate = `{
                     "type": "object",
                     "additionalProperties": {
                         "type": "string"
+                    },
+                    "example": {
+                        "email": "must be a valid email address"
                     }
                 },
                 "message": {
                     "description": "General message",
-                    "type": "string"
+                    "type": "string",
+                    "example": "invalid input data"
                 }
             }
         },
@@ -158,34 +171,44 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "age": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 25
                 },
                 "bio": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "I'm Harsh"
                 },
                 "birthday": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "2001-04-30"
                 },
                 "createdAt": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "2025-06-15 11:00:00"
                 },
                 "email": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "abd@gmail.com"
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "mobileNumber": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "9898009898"
                 },
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Harsh"
                 },
                 "pancard": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "ABCDE12345"
                 },
                 "updatedAt": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "2025-06-15 11:00:00"
                 }
             }
         }
@@ -195,7 +218,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost:8000",
+	Host:             "localhost:8081",
 	BasePath:         "/",
 	Schemes:          []string{},
 	Title:            "User API",
